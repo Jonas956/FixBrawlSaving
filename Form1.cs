@@ -88,14 +88,14 @@ namespace FixBrawlSaving
             string fixszspath = "%temp%\tempwzst" + szsdname;
 
             string fixszs = "/c cd $env:TEMP\\tempwszst\\; mv .\\"+szsdname+"\\bg\\timg\\button\\ .\\"+szsdname+"\\;" + //Funktioniert bis hier!
-                "mv .\\"+szsdname+ ".\\button\\timg\\control\\ .\\" + szsdname+"\\;" +
-                "mv.\\"+szsdname+".\\control\\timg\\dpd_pointer\\ .\\"+szsdname+"\\; " +
-                "mv.\\"+szsdname+ ".\\dpd_pointer\\timg\\effect\\ .\\" + szsdname+"\\; " +
-                "mv.\\"+szsdname+ ".\\dpd_pointer\\timg\\globe\\ .\\" + szsdname+"\\; " +
-                "mv.\\"+szsdname+ ".\\globe\\ctrl\\message_window\\ .\\" + szsdname+"\\; " +
-                "mv.\\"+szsdname+ ".\\message_window\\timg\\model\\ .\\" + szsdname+"\\; " +
-                "mv.\\"+szsdname+ ".\\model\\timg\\pad_recognize\\ .\\" + szsdname+"\\; " +
-                "mv.\\"+szsdname+ ".\\pad_recognize\\timg\\parameter\\ .\\" + szsdname+"\\";
+                "mv .\\"+szsdname+ "\\button\\timg\\control\\ .\\" + szsdname+"\\;" +
+                "mv .\\"+szsdname+"\\control\\timg\\dpd_pointer\\ .\\"+szsdname+"\\; " +
+                "mv .\\"+szsdname+ "\\dpd_pointer\\timg\\effect\\ .\\" + szsdname+"\\; " +
+                "mv .\\"+szsdname+ "\\dpd_pointer\\timg\\globe\\ .\\" + szsdname+"\\; " +
+                "mv .\\"+szsdname+ "\\globe\\ctrl\\message_window\\ .\\" + szsdname+"\\; " +
+                "mv .\\"+szsdname+ "\\message_window\\timg\\model\\ .\\" + szsdname+"\\; " +
+                "mv .\\"+szsdname+ "\\model\\timg\\pad_recognize\\ .\\" + szsdname+"\\; " +
+                "mv .\\"+szsdname+ "\\pad_recognize\\timg\\parameter\\ .\\" + szsdname+"\\";
 
             System.Diagnostics.Process.Start("powershell",fixszs);
         }
