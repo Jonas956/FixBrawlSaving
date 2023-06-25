@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -42,14 +43,12 @@ namespace FixBrawlSaving
 
         private void debug_Click(object sender, EventArgs e)
         {
-            /*
-             MessageBox.Show(szspath);
-             MessageBox.Show(szsdpath);
-             MessageBox.Show(szsname);
-             MessageBox.Show(szsdname);
-            */
-
-            MessageBox.Show("cd $env: TEMP\\tempwszst\\; mv.\\"+szsdname+"\\bg\\timg\\button\\ .\\"+szsdname+"\\");
+            //Run Command Silent!
+            Process cmd = new Process();
+            cmd.StartInfo.FileName = "cmd.exe";
+            cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            cmd.StartInfo.Arguments = "/c explorer.exe";
+            cmd.Start();
 
         }
 
@@ -70,7 +69,7 @@ namespace FixBrawlSaving
             szsname = openFileDialog1.SafeFileName;
             szsdname = convertszs(szsname);
 
-         /*
+         
             //Creation of the Tempfolder where the file will be extracted to!
             string mktemp = "cd %temp% && mkdir tempwszst";
             System.Diagnostics.Process.Start("CMD.exe","cmd.exe /c" + mktemp);
@@ -81,7 +80,7 @@ namespace FixBrawlSaving
 
             string extractszs = "wszst extract "+szspath+" -d %temp%\\tempwszst\\"+szsdname;
             System.Diagnostics.Process.Start("CMD.exe", "cmd.exe /c" + extractszs);
-         */
+        
 
             //Fix SZS 
 
@@ -104,8 +103,16 @@ namespace FixBrawlSaving
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-
+                
             }
+
+            string saveto = saveFileDialog1.FileName;
+
+            string saveszs = "/c wszst c %temp%\\tempwszst\\"+szsdname+ " -d "+saveto;
+
+            MessageBox.Show(saveszs);
+           System.Diagnostics.Process.Start("cmd", saveszs);
+
         }
     }
 }
