@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
@@ -41,14 +42,12 @@ namespace FixBrawlSaving
             }
         }
 
-        private void debug_Click(object sender, EventArgs e)
+        private async void debug_Click(object sender, EventArgs e)
         {
-            //Run Command Silent!
-            Process cmd = new Process();
-            cmd.StartInfo.FileName = "cmd.exe";
-            cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            cmd.StartInfo.Arguments = "/c explorer.exe";
-            cmd.Start();
+            
+            MessageBox.Show("start");
+            await Task.Delay(10000);
+            MessageBox.Show("ende");
 
         }
 
@@ -57,8 +56,12 @@ namespace FixBrawlSaving
             return szs.Replace(".szs", ".d");
         }
 
-        private void loadszs_Click(object sender, EventArgs e)
+        private async void loadszs_Click(object sender, EventArgs e)
         {
+           
+
+
+            saveszs.Enabled = false;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 szspath = openFileDialog1.FileName;
@@ -71,20 +74,39 @@ namespace FixBrawlSaving
 
          
             //Creation of the Tempfolder where the file will be extracted to!
-            string mktemp = "cd %temp% && mkdir tempwszst";
-            System.Diagnostics.Process.Start("CMD.exe","cmd.exe /c" + mktemp);
+            string mktemp = "/c cd %temp% && mkdir tempwszst";
+
+            Process cmdmktemp = new Process();
+            cmdmktemp.StartInfo.FileName = "cmd.exe";
+            cmdmktemp.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            cmdmktemp.StartInfo.Arguments = mktemp;
+            cmdmktemp.Start();
+
+           // System.Diagnostics.Process.Start("CMD.exe","cmd.exe /c" + mktemp);
 
             lblszs.Text = "Current SZS: " + szspath;
 
             //Extracting the SZS File to %temp%
 
-            string extractszs = "wszst extract "+szspath+" -d %temp%\\tempwszst\\"+szsdname;
-            System.Diagnostics.Process.Start("CMD.exe", "cmd.exe /c" + extractszs);
-        
+            string extractszs = "/c wszst extract "+szspath+" -d %temp%\\tempwszst\\"+szsdname +" && timeout / t 2";
+
+            Process cmdextractszs = new Process();
+            cmdextractszs.StartInfo.FileName = "cmd.exe";
+            cmdextractszs.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            cmdextractszs.StartInfo.Arguments = extractszs;
+            cmdextractszs.Start();
+
+            await Task.Delay(10000);
+            
+
+
+            //System.Diagnostics.Process.Start("CMD.exe", "cmd.exe /c" + extractszs);
+
 
             //Fix SZS 
 
             string fixszspath = "%temp%\tempwzst" + szsdname;
+            
 
             string fixszs = "/c cd $env:TEMP\\tempwszst\\; mv .\\"+szsdname+"\\bg\\timg\\button\\ .\\"+szsdname+"\\;" + //Funktioniert bis hier!
                 "mv .\\"+szsdname+ "\\button\\timg\\control\\ .\\" + szsdname+"\\;" +
@@ -94,13 +116,22 @@ namespace FixBrawlSaving
                 "mv .\\"+szsdname+ "\\globe\\ctrl\\message_window\\ .\\" + szsdname+"\\; " +
                 "mv .\\"+szsdname+ "\\message_window\\timg\\model\\ .\\" + szsdname+"\\; " +
                 "mv .\\"+szsdname+ "\\model\\timg\\pad_recognize\\ .\\" + szsdname+"\\; " +
-                "mv .\\"+szsdname+ "\\pad_recognize\\timg\\parameter\\ .\\" + szsdname+"\\";
+                "mv .\\"+szsdname+ "\\pad_recognize\\timg\\parameter\\ .\\" + szsdname+ "\\";
 
-            System.Diagnostics.Process.Start("powershell",fixszs);
+            Process cmdfixszs = new Process();
+            cmdfixszs.StartInfo.FileName = "powershell.exe";
+            cmdfixszs.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            cmdfixszs.StartInfo.Arguments = fixszs;
+            cmdfixszs.Start();
+
+            //System.Diagnostics.Process.Start("powershell",fixszs);
+            saveszs.Enabled = true;
+
         }
 
         private void saveszs_Click(object sender, EventArgs e)
         {
+            loadszs.Enabled = false;
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 
@@ -110,8 +141,18 @@ namespace FixBrawlSaving
 
             string saveszs = "/c wszst c %temp%\\tempwszst\\"+szsdname+ " -d "+saveto;
 
-            MessageBox.Show(saveszs);
-           System.Diagnostics.Process.Start("cmd", saveszs);
+            Process cmdsaveszs = new Process();
+            cmdsaveszs.StartInfo.FileName = "cmd.exe";
+            cmdsaveszs.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            cmdsaveszs.StartInfo.Arguments = saveszs;
+            cmdsaveszs.Start();
+
+            loadszs.Enabled = true;
+
+            //MessageBox.Show(saveszs);
+
+
+            //System.Diagnostics.Process.Start("cmd", saveszs);
 
         }
     }
