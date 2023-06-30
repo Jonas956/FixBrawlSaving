@@ -22,6 +22,9 @@ namespace FixBrawlSaving
         string szsdpath = string.Empty;
         string szsname = string.Empty;
         string szsdname = string.Empty;
+        string tempFolderPath = Path.Combine(Environment.GetEnvironmentVariable("TEMP"), "tempwszst");
+
+
 
         public Form1()
         {
@@ -30,7 +33,17 @@ namespace FixBrawlSaving
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (File.Exists(wszst))
+
+            if (Directory.Exists(tempFolderPath))   //Deletes tempfolder if it still exists to clean up old files
+            {
+                Process cmdcleartemp = new Process();
+                cmdcleartemp.StartInfo.FileName = "cmd.exe";
+                cmdcleartemp.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                cmdcleartemp.StartInfo.Arguments = "/c rmdir %temp%\tempwszst /s /q";
+                cmdcleartemp.Start();
+            }
+
+            if (File.Exists(wszst)) //Does the user have wszst installed
             {
                 lblwszst.Text = "Wiimms SZS Tools found!";
                 lblwszst.ForeColor = Color.Green;
@@ -39,29 +52,38 @@ namespace FixBrawlSaving
             {
                 lblwszst.Text = "Wiimms SZS Tools not found!";
                 lblwszst.ForeColor = Color.Red;
+                DialogResult result = MessageBox.Show("Do you wish to download Wiimms SZS Tools now?", "Wiimms SZS Tools seems to be missing!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.No)
+                {
+                    DialogResult result2 = MessageBox.Show("Do you wish to contine?", "Do you wish to contine?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result2 == DialogResult.No)
+                    {
+                        Close();
+                    }
+                }
+                else
+                {
+                    string url = "https://szs.wiimm.de/download.html";
+
+                    Process.Start(url);
+                    Close();
+                }           
             }
         }
 
-        private async void debug_Click(object sender, EventArgs e)
+        private string convertszs(string szs)   //Converts given string from .szs to .d 
         {
-            
-            MessageBox.Show("start");
-            await Task.Delay(10000);
-            MessageBox.Show("ende");
-
-        }
-
-        private string convertszs(string szs)
-        {
-            return szs.Replace(".szs", ".d");
+            return szs.Replace(".szs", ".d");   
         }
 
         private async void loadszs_Click(object sender, EventArgs e)
         {
-           
+            lblstatus.Text = "Status: Working...";
 
 
-            saveszs.Enabled = false;
+            saveszs.Enabled = false;    
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 szspath = openFileDialog1.FileName;
@@ -76,17 +98,14 @@ namespace FixBrawlSaving
             //Creation of the Tempfolder where the file will be extracted to!
             string mktemp = "/c cd %temp% && mkdir tempwszst";
 
-            Process cmdmktemp = new Process();
+            Process cmdmktemp = new Process();      //Create invis process that makes the magic happen
             cmdmktemp.StartInfo.FileName = "cmd.exe";
             cmdmktemp.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             cmdmktemp.StartInfo.Arguments = mktemp;
             cmdmktemp.Start();
 
-           // System.Diagnostics.Process.Start("CMD.exe","cmd.exe /c" + mktemp);
 
             lblszs.Text = "Current SZS: " + szspath;
-
-            //Extracting the SZS File to %temp%
 
             string extractszs = "/c wszst extract "+szspath+" -d %temp%\\tempwszst\\"+szsdname +" && timeout / t 2";
 
@@ -96,19 +115,11 @@ namespace FixBrawlSaving
             cmdextractszs.StartInfo.Arguments = extractszs;
             cmdextractszs.Start();
 
-            await Task.Delay(10000);
-            
-
-
-            //System.Diagnostics.Process.Start("CMD.exe", "cmd.exe /c" + extractszs);
-
-
-            //Fix SZS 
+            await Task.Delay(10000);    //Needed delay to ensure the steps from above finished before moving on, (might be too long)
 
             string fixszspath = "%temp%\tempwzst" + szsdname;
-            
 
-            string fixszs = "/c cd $env:TEMP\\tempwszst\\; mv .\\"+szsdname+"\\bg\\timg\\button\\ .\\"+szsdname+"\\;" + //Funktioniert bis hier!
+            string fixszs = "/c cd $env:TEMP\\tempwszst\\; mv .\\"+szsdname+"\\bg\\timg\\button\\ .\\"+szsdname+"\\;" +  //moving the files where they belong
                 "mv .\\"+szsdname+ "\\button\\timg\\control\\ .\\" + szsdname+"\\;" +
                 "mv .\\"+szsdname+"\\control\\timg\\dpd_pointer\\ .\\"+szsdname+"\\; " +
                 "mv .\\"+szsdname+ "\\dpd_pointer\\timg\\effect\\ .\\" + szsdname+"\\; " +
@@ -118,25 +129,35 @@ namespace FixBrawlSaving
                 "mv .\\"+szsdname+ "\\model\\timg\\pad_recognize\\ .\\" + szsdname+"\\; " +
                 "mv .\\"+szsdname+ "\\pad_recognize\\timg\\parameter\\ .\\" + szsdname+ "\\";
 
+
             Process cmdfixszs = new Process();
             cmdfixszs.StartInfo.FileName = "powershell.exe";
             cmdfixszs.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             cmdfixszs.StartInfo.Arguments = fixszs;
             cmdfixszs.Start();
 
-            //System.Diagnostics.Process.Start("powershell",fixszs);
+
             saveszs.Enabled = true;
+            lblstatus.Text = "Status: Finished!";
+            lblstatus.ForeColor = Color.Green;
+
+            await Task.Delay(4000); //delay for changing text
+
+            lblstatus.Text = "Status: Waiting...";
+
+            lblstatus.ForeColor = Color.Black;
 
         }
 
-        private void saveszs_Click(object sender, EventArgs e)
+        private async void saveszs_Click(object sender, EventArgs e)
         {
+            lblstatus.Text = "Status: Working...";
+            lblstatus.ForeColor = Color.Black;
             loadszs.Enabled = false;
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 
             }
-
             string saveto = saveFileDialog1.FileName;
 
             string saveszs = "/c wszst c %temp%\\tempwszst\\"+szsdname+ " -d "+saveto;
@@ -149,11 +170,14 @@ namespace FixBrawlSaving
 
             loadszs.Enabled = true;
 
-            //MessageBox.Show(saveszs);
+            lblstatus.Text = "Status: Finished!";
+            lblstatus.ForeColor = Color.Green;
 
+            await Task.Delay(4000); //delay for changing text
 
-            //System.Diagnostics.Process.Start("cmd", saveszs);
+            lblstatus.Text = "Status: Waiting...";
 
+            lblstatus.ForeColor = Color.Black;  
         }
     }
 }

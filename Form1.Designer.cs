@@ -34,15 +34,16 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.lblwszst = new System.Windows.Forms.Label();
             this.lblszs = new System.Windows.Forms.Label();
-            this.debug = new System.Windows.Forms.Button();
             this.saveszs = new System.Windows.Forms.Button();
+            this.lblstatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // loadszs
             // 
-            this.loadszs.Location = new System.Drawing.Point(13, 13);
+            this.loadszs.Dock = System.Windows.Forms.DockStyle.Top;
+            this.loadszs.Location = new System.Drawing.Point(0, 0);
             this.loadszs.Name = "loadszs";
-            this.loadszs.Size = new System.Drawing.Size(87, 28);
+            this.loadszs.Size = new System.Drawing.Size(432, 28);
             this.loadszs.TabIndex = 0;
             this.loadszs.Text = "Load SZS File";
             this.loadszs.UseVisualStyleBackColor = true;
@@ -51,56 +52,68 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "Mario Kart Wii SZS files|*.szs";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "Mario Kart Wii SZS files|*.szs";
             // 
             // lblwszst
             // 
             this.lblwszst.AutoSize = true;
-            this.lblwszst.Location = new System.Drawing.Point(38, 57);
+            this.lblwszst.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblwszst.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblwszst.Location = new System.Drawing.Point(0, 28);
             this.lblwszst.Name = "lblwszst";
-            this.lblwszst.Size = new System.Drawing.Size(35, 13);
+            this.lblwszst.Size = new System.Drawing.Size(46, 18);
             this.lblwszst.TabIndex = 1;
             this.lblwszst.Text = "label1";
             // 
             // lblszs
             // 
             this.lblszs.AutoSize = true;
-            this.lblszs.Location = new System.Drawing.Point(38, 92);
+            this.lblszs.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblszs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.lblszs.Location = new System.Drawing.Point(0, 46);
             this.lblszs.Name = "lblszs";
-            this.lblszs.Size = new System.Drawing.Size(97, 13);
+            this.lblszs.Size = new System.Drawing.Size(134, 18);
             this.lblszs.TabIndex = 2;
             this.lblszs.Text = "Current SZS: None";
             // 
-            // debug
-            // 
-            this.debug.Location = new System.Drawing.Point(134, 324);
-            this.debug.Name = "debug";
-            this.debug.Size = new System.Drawing.Size(75, 23);
-            this.debug.TabIndex = 3;
-            this.debug.Text = "button2";
-            this.debug.UseVisualStyleBackColor = true;
-            this.debug.Click += new System.EventHandler(this.debug_Click);
-            // 
             // saveszs
             // 
-            this.saveszs.Location = new System.Drawing.Point(13, 157);
+            this.saveszs.Dock = System.Windows.Forms.DockStyle.Top;
+            this.saveszs.Location = new System.Drawing.Point(0, 64);
             this.saveszs.Name = "saveszs";
-            this.saveszs.Size = new System.Drawing.Size(87, 28);
+            this.saveszs.Size = new System.Drawing.Size(432, 28);
             this.saveszs.TabIndex = 4;
             this.saveszs.Text = "Save SZS file";
             this.saveszs.UseVisualStyleBackColor = true;
             this.saveszs.Click += new System.EventHandler(this.saveszs_Click);
             // 
+            // lblstatus
+            // 
+            this.lblstatus.AutoSize = true;
+            this.lblstatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
+            this.lblstatus.Location = new System.Drawing.Point(3, 104);
+            this.lblstatus.Name = "lblstatus";
+            this.lblstatus.Size = new System.Drawing.Size(119, 18);
+            this.lblstatus.TabIndex = 5;
+            this.lblstatus.Text = "Status: Waiting...";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(432, 374);
+            this.Controls.Add(this.lblstatus);
             this.Controls.Add(this.saveszs);
-            this.Controls.Add(this.debug);
             this.Controls.Add(this.lblszs);
             this.Controls.Add(this.lblwszst);
             this.Controls.Add(this.loadszs);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "FixBrawlSaving v1.0";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -116,8 +129,8 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Label lblwszst;
         private System.Windows.Forms.Label lblszs;
-        private System.Windows.Forms.Button debug;
         private System.Windows.Forms.Button saveszs;
+        private System.Windows.Forms.Label lblstatus;
     }
 }
 
