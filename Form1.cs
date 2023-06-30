@@ -94,7 +94,7 @@ namespace FixBrawlSaving
             szsname = openFileDialog1.SafeFileName;
             szsdname = convertszs(szsname);
 
-         
+         /*
             //Creation of the Tempfolder where the file will be extracted to!
             string mktemp = "/c cd %temp% && mkdir tempwszst";
 
@@ -103,6 +103,7 @@ namespace FixBrawlSaving
             cmdmktemp.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             cmdmktemp.StartInfo.Arguments = mktemp;
             cmdmktemp.Start();
+         */
 
 
             lblszs.Text = "Current SZS: " + szspath;
@@ -160,7 +161,7 @@ namespace FixBrawlSaving
             }
             string saveto = saveFileDialog1.FileName;
 
-            string saveszs = "/c wszst c %temp%\\tempwszst\\"+szsdname+ " -d "+saveto;
+            string saveszs = "/c wszst c --overwrite %temp%\\tempwszst\\"+szsdname+ " -d "+saveto;
 
             Process cmdsaveszs = new Process();
             cmdsaveszs.StartInfo.FileName = "cmd.exe";
