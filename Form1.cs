@@ -108,11 +108,9 @@ namespace FixBrawlSaving
 
             string extractszs = "/c wszst extract "+lm_szspath+" -d %temp%\\tempwszst\\"+lm_szsdname;
 
-            MessageBox.Show(extractszs);
-
             Process cmdextractszs = new Process();
             cmdextractszs.StartInfo.FileName = "cmd.exe";
-            cmdextractszs.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+            cmdextractszs.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             cmdextractszs.StartInfo.Arguments = extractszs;
             cmdextractszs.Start();
 
