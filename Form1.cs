@@ -16,7 +16,6 @@ namespace FixBrawlSaving
 {
     public partial class Form1 : Form
     {
-
         string wszst = @"C:\Program Files\Wiimm\SZS\wszst.exe";
         string szspath = string.Empty;
         string szsdpath = string.Empty;
@@ -30,8 +29,6 @@ namespace FixBrawlSaving
         string infotxt = "info.txt";
         string szsdefaultname = string.Empty;
 
-
-
         public Form1()
         {
             InitializeComponent();
@@ -39,26 +36,14 @@ namespace FixBrawlSaving
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (File.Exists(infotxt)) //Does the user have wszst installed
-            {
-                
-            }else
-            {
-                MessageBox.Show("Please don´t use spaces inside of your szs names");
-                File.Create(infotxt).Close();
-                File.WriteAllText(infotxt, "Please don´t use spaces inside of your szs names");
-
-            }
-
-
                 if (Directory.Exists(tempFolderPath))   //Deletes tempfolder if it still exists to clean up old files
-            {
+                {
                 Process cmdcleartemp = new Process();
                 cmdcleartemp.StartInfo.FileName = "cmd.exe";
                 cmdcleartemp.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 cmdcleartemp.StartInfo.Arguments = "/c rmdir %temp%\tempwszst /s /q";
                 cmdcleartemp.Start();
-            }
+                }
 
             if (File.Exists(wszst)) //Does the user have wszst installed
             {
@@ -119,50 +104,23 @@ namespace FixBrawlSaving
             lm_szsname= convertlm(szsname);
             lm_szsdname = convertlm(szsdname);
 
-         
-
-
             lblszs.Text = "Current SZS: " + szspath;
 
-            string extractszs = "/c wszst extract "+lm_szspath+" -d %temp%\\tempwszst\\"+lm_szsdname +" && pause";
+            string extractszs = "/c wszst extract "+lm_szspath+" -d %temp%\\tempwszst\\"+lm_szsdname;
 
             MessageBox.Show(extractszs);
 
             Process cmdextractszs = new Process();
             cmdextractszs.StartInfo.FileName = "cmd.exe";
-            cmdextractszs.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
+            cmdextractszs.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
             cmdextractszs.StartInfo.Arguments = extractszs;
             cmdextractszs.Start();
-
-          
 
             await Task.Delay(10000);    //Needed delay to ensure the steps from above finished before moving on, (might be too long)
 
             string fixszspath = "%temp%\tempwzst" + szsdname;
 
-            string fixszs = "/c cd $env:TEMP\\tempwszst\\; mv .\\"+szsdname+"\\bg\\timg\\button\\ .\\"+szsdname+"\\;" +  //moving the files where they belong
-                "mv .\\"+szsdname+ "\\button\\timg\\control\\ .\\" + szsdname+"\\;" +
-                "mv .\\"+szsdname+"\\control\\timg\\dpd_pointer\\ .\\"+szsdname+"\\; " +
-                "mv .\\"+szsdname+ "\\dpd_pointer\\timg\\effect\\ .\\" + szsdname+"\\; " +
-                "mv .\\"+szsdname+ "\\dpd_pointer\\timg\\globe\\ .\\" + szsdname+"\\; " +
-                "mv .\\"+szsdname+ "\\globe\\ctrl\\message_window\\ .\\" + szsdname+"\\; " +
-                "mv .\\"+szsdname+ "\\message_window\\timg\\model\\ .\\" + szsdname+"\\; " +
-                "mv .\\"+szsdname+ "\\model\\timg\\pad_recognize\\ .\\" + szsdname+"\\; " +
-                "mv .\\"+szsdname+ "\\pad_recognize\\timg\\parameter\\ .\\" + szsdname+ "\\";
-
-            string neu = "/c cd $env:TEMP\\tempwszst\\;  mv '.\\" + szsdname + "\\bg\\timg\\button\\' '.\\" + szsdname + "\\'´;"+
-                "mv '.\\" + szsdname + "\\button\\timg\\control\\' '.\\" + szsdname + "\\;" +
-                "mv '.\\" + szsdname + "\\control\\timg\\dpd_pointerl\\' '.\\" + szsdname + "\\;" +
-                "mv '.\\" + szsdname + "\\dpd_pointer\\timg\\effect\\' '.\\" + szsdname + "\\;" +
-                "mv '.\\" + szsdname + "\\dpd_pointer\\timg\\globe\\' '.\\" + szsdname + "\\;" +
-                "mv '.\\" + szsdname + "\\globe\\ctrl\\message_window\\' '.\\" + szsdname + "\\;" +
-                "mv '.\\" + szsdname + "\\message_window\\timg\\model\\' '.\\" + szsdname + "\\;" +
-                "mv '.\\" + szsdname + "\\model\\timg\\pad_recognize\\' '.\\" + szsdname + "\\;" +
-                "mv '.\\" + szsdname + "\\pad_recognize\\timg\\parameter\\' '.\\" + szsdname + "\\";
-
-            // string test = "/c cd $env:TEMP\\tempwszst\\;  mv '.\\" + szsdname + "\\bg\\timg\\button\\' '.\\" + szsdname + "\\' ;pause"; Funktionierender String
-
-            string test = "/c cd $env:TEMP\\tempwszst\\;  mv '.\\" + szsdname + "\\bg\\timg\\button\\' '.\\" + szsdname + "\\'; " +
+            string fixszs = "/c cd $env:TEMP\\tempwszst\\;  mv '.\\" + szsdname + "\\bg\\timg\\button\\' '.\\" + szsdname + "\\'; " +
                 "mv '.\\" + szsdname + "\\button\\timg\\control\\' '.\\" + szsdname + "\\'; " +
                 "mv '.\\" + szsdname + "\\control\\timg\\dpd_pointer\\' '.\\" + szsdname + "\\'; " +
                 "mv '.\\" + szsdname + "\\dpd_pointer\\timg\\effect\\' '.\\" + szsdname + "\\'; " +
@@ -172,15 +130,10 @@ namespace FixBrawlSaving
                 "mv '.\\" + szsdname + "\\model\\timg\\pad_recognize\\' '.\\" + szsdname + "\\'; " +
                 "mv '.\\" + szsdname + "\\pad_recognize\\timg\\parameter\\' '.\\" + szsdname + "\\'";
 
-
-
-
-
-
-           Process cmdfixszs = new Process();
+            Process cmdfixszs = new Process();
             cmdfixszs.StartInfo.FileName = "powershell.exe";
-            cmdfixszs.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-            cmdfixszs.StartInfo.Arguments = test;
+            cmdfixszs.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+            cmdfixszs.StartInfo.Arguments = fixszs;
             cmdfixszs.Start();
          
             saveszs.Enabled = true;
@@ -192,8 +145,6 @@ namespace FixBrawlSaving
             lblstatus.Text = "Status: Waiting...";
 
             lblstatus.ForeColor = Color.Black;
-            
-
         }
 
         private async void saveszs_Click(object sender, EventArgs e)
@@ -207,8 +158,6 @@ namespace FixBrawlSaving
             }
             string saveto = saveFileDialog1.FileName;
 
-            //string saveszs = "/c wszst c --overwrite %temp%\\tempwszst\\"+szsdname+ " -d "+saveto;
-            //string saveszs = "/c wszst c --overwrite \"%temp%\\tempwszst\\" + szsdname + "\" -d " + saveto; alles außer save loc
             string saveszs = "/c wszst c --overwrite \"%temp%\\tempwszst\\" + szsdname + "\" -d \"" + saveto+"\"";
 
             Process cmdsaveszs = new Process();
@@ -232,7 +181,6 @@ namespace FixBrawlSaving
         private void button1_Click(object sender, EventArgs e)
         {
             string neu = "/c cd $env:TEMP\\tempwszst\\; mv '.\\" + szsdname + "\\bg\\timg\\button' '.\\" + szsdname + "\\;pause";
-
 
             Process cmdfixszs = new Process();
             cmdfixszs.StartInfo.FileName = "powershell.exe";
