@@ -36,8 +36,6 @@
             this.lblszs = new System.Windows.Forms.Label();
             this.saveszs = new System.Windows.Forms.Button();
             this.lblstatus = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.lbdebug = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // loadszs
@@ -103,33 +101,11 @@
             this.lblstatus.TabIndex = 5;
             this.lblstatus.Text = "Status: Waiting...";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(163, 265);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // lbdebug
-            // 
-            this.lbdebug.AutoSize = true;
-            this.lbdebug.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
-            this.lbdebug.Location = new System.Drawing.Point(64, 205);
-            this.lbdebug.Name = "lbdebug";
-            this.lbdebug.Size = new System.Drawing.Size(60, 24);
-            this.lbdebug.TabIndex = 7;
-            this.lbdebug.Text = "label1";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(432, 374);
-            this.Controls.Add(this.lbdebug);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.lblstatus);
             this.Controls.Add(this.saveszs);
             this.Controls.Add(this.lblszs);
@@ -155,8 +131,6 @@
         private System.Windows.Forms.Label lblszs;
         private System.Windows.Forms.Button saveszs;
         private System.Windows.Forms.Label lblstatus;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label lbdebug;
     }
 }
 

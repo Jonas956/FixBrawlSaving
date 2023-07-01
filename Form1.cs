@@ -176,17 +176,6 @@ namespace FixBrawlSaving
             lblstatus.Text = "Status: Waiting...";
 
             lblstatus.ForeColor = Color.Black;  
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string neu = "/c cd $env:TEMP\\tempwszst\\; mv '.\\" + szsdname + "\\bg\\timg\\button' '.\\" + szsdname + "\\;pause";
-
-            Process cmdfixszs = new Process();
-            cmdfixszs.StartInfo.FileName = "powershell.exe";
-            cmdfixszs.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-            cmdfixszs.StartInfo.Arguments = neu;
-            cmdfixszs.Start();
-        }
+        }  
     }
 }
